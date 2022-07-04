@@ -6,6 +6,7 @@ module Api
 
     def user_feed
       scores = Score.all.includes(:user).order(played_at: :desc, id: :desc)[0..24]
+
       serialized_scores = scores.map(&:serialize)
 
       response = {
@@ -35,6 +36,18 @@ module Api
       render json: {
         score: @score.serialize
       }
+    end
+
+    def user_scores
+      scores = Score.where(user_id: params[:id]).order(played_at: :desc, id: :desc).includes(:user)
+
+      serialized_scores = scores.map(&:serialize)
+
+      response = {
+        scores: serialized_scores,
+      }
+
+      render json: response.to_json
     end
 
     private
