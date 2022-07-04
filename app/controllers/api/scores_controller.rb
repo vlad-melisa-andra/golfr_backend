@@ -49,7 +49,6 @@ module Api
       render json: response.to_json
     end
 
-
     private
 
     def score_params
